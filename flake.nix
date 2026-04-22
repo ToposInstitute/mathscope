@@ -15,6 +15,8 @@
 			pyenv = pkgs.python3.withPackages (ps: with ps; [
 				pip
 				django
+				django-bootstrap5
+				django-widget-tweaks
 			]);
 		in
 		{
@@ -22,7 +24,7 @@
 				buildInputs = [
 					pyenv
 					python3
-				]
+				];
 			};
 		}
 	);
