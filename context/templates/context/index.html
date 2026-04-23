@@ -1,0 +1,38 @@
+{% extends 'context/base.html' %}
+
+{% load i18n static %}
+
+{% block description %}
+{% trans "Search for mathematical concepts and definitions." %}
+{% endblock %}
+
+{% block author %}
+{% trans "Jacob Collard and Valeria de Paiva" %}
+{% endblock %}
+
+{% block title %}
+{% trans "Mathoscope" %}
+{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+	<div class="center-form vertical-center">
+		<div class="text-center">
+			<div class="center-title">
+				<h1>&#x1f52d; {% trans "Mathoscope" %}</h1>
+			</div>
+
+			<p>
+			{% blocktrans %}
+			Search the name of a mathematical concept to find information about its
+			definition and examples of usage.
+			{% endblocktrans %}
+			</p>
+		</div>
+
+		<form action="{% url "context:search" %}" method="get">
+			{% include "context/search_form.html" with form=form %}
+		</form>
+	</div>
+</main>
+{% endblock %}

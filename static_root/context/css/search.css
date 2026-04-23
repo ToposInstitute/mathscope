@@ -1,0 +1,31 @@
+.vertical-center {
+  padding-top: 2em;
+}
+
+.near-top {
+  margin-top: 2em;
+}
+
+.center-title {
+  padding-bottom: 2em;
+}
+
+.results {
+  margin-top: 5em;
+}
+
+.search-again {
+  margin-bottom: 3em;
+}
+
+.advanced-search {
+  margin-top: 1em; 
+}
+
+.search-result-card {
+  margin-bottom: 1em;
+}
+
+.card-group {
+  margin-top: 1em;
+}
