@@ -12,11 +12,28 @@
 			pkgs = import nixpkgs {
 				inherit system;
 			};
+			conllu = pkgs.python3Packages.buildPythonPackage rec {
+				pname = "conllu";
+				version = "6.0.0";
+				format = "pyproject";
+
+				nativeBuildInputs = [
+					pkgs.python3Packages.setuptools
+					pkgs.python3Packages.wheel
+				];
+				src = pkgs.python3Packages.fetchPypi {
+					inherit pname version;
+					sha256 = "sha256-vGBy1J0A539EVAOVGRGMBQD6+g0OtQn1N5MIEIT1Cro=";
+				};
+				doCheck = false;
+			};
 			pyenv = pkgs.python3.withPackages (ps: with ps; [
-				pip
+				conllu
 				django
 				django-bootstrap5
 				django-widget-tweaks
+				pip
+				tqdm
 			]);
 		in
 		{
