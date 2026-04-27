@@ -33,6 +33,7 @@
 				django-bootstrap5
 				django-widget-tweaks
 				pip
+				requests
 				tqdm
 			]);
 		in

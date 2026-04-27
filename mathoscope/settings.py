@@ -123,3 +123,7 @@ STATIC_ROOT = 'static_root/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Mathoscope Settings
+
+SEARCH_REGEX = r'\b%s\b'
