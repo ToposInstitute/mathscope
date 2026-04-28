@@ -32,6 +32,7 @@
 				django
 				django-bootstrap5
 				django-widget-tweaks
+				gunicorn
 				pip
 				requests
 				tqdm
@@ -43,6 +44,29 @@
 					pyenv
 					python3
 				];
+			};
+			packages.${system}.default = pkgs.python3Packages.buildPythonApplication {
+				pname = "mathoscope";
+				version = "0.1.0";
+				src = ./.;
+				propagatedBuildInputs = with pkgs.python3Packages; [
+					conllu
+					django
+					django-bootstrap5
+					django-widget-tweaks
+					gunicorn
+					pip
+					requests
+					tqdm
+				];
+				postInstall = ''
+					export DJANGO_SETTINGS_MODULE=mathoscope.settings
+					export SECRET_KEY=dummy
+					python manage.py collectstatic --noinput
+					mkdir -p $out/static
+					cp -r static/* $out/static/
+				'';
+				doCheck=false;
 			};
 		}
 	);
