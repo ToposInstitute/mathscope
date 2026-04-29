@@ -70,7 +70,7 @@
 						export SECRET_KEY=dummy
 						python manage.py collectstatic --noinput
 						mkdir -p $out/share/static
-						cp -r static/* $out/share/static/
+						cp -r static_root/* $out/share/static/.
 					'';
 					doCheck=false;
 				};
