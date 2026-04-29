@@ -2,7 +2,7 @@
 	description = "Reproducible Python environment for Mathoscope.";
 
 	inputs = {
-		nixkpgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 		flake-utils.url = "github:numtide/flake-utils";
 	};
 
@@ -54,6 +54,7 @@
 					nativeBuildInputs = [
 						pkgs.python3Packages.setuptools
 						pkgs.python3Packages.wheel
+						pkgs.makeWrapper
 					];
 					propagatedBuildInputs = with pkgs.python3Packages; [
 						conllu
@@ -71,6 +72,10 @@
 						python manage.py collectstatic --noinput
 						mkdir -p $out/share/static
 						cp -r static_root/* $out/share/static/.
+
+						makeWrapper ${pkgs.python3Packages.gunicorn}/bin/gunicorn $out/bin/gunicorn \
+							--prefix PYTHONPATH : "$PYTHONPATH" \
+							--set DJANGO_SETTINGS_MODULE mathoscope.settings
 					'';
 					doCheck=false;
 				};
