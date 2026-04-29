@@ -131,3 +131,12 @@ SEARCH_REGEX = r'\b%s\b'
 if os.environ.get('PRODUCTION') == 'true':
     DEBUG = True
     ALLOWED_HOSTS = ['mathoscope.jacobcollard.com']
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'mathoscope',
+            'USER': 'mathoscope',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
