@@ -63,6 +63,7 @@
 						django-widget-tweaks
 						gunicorn
 						pip
+						psycopg2
 						requests
 						tqdm
 					];

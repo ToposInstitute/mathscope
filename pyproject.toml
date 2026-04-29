@@ -11,6 +11,7 @@ dependencies = [
     "django-bootstrap5",
     "django-widget-tweaks",
     "gunicorn",
+	"psycopg2",
     "requests",
     "tqdm",
     "conllu",
