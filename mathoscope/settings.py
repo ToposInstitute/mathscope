@@ -127,3 +127,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Mathoscope Settings
 
 SEARCH_REGEX = r'\b%s\b'
+
+if os.environ.get('PRODUCTION') == 'true':
+    DEBUG = True
+    ALLOWED_HOSTS = ['mathoscope.jacobcollard.com']
