@@ -15,6 +15,9 @@ dependencies = [
     "tqdm",
     "conllu",
 ]
+authors = [
+	{ name = "Jacob Collard", email = "jacob@jacobcollard.com" }
+]
 
 [tool.setuptools]
 # This ensures manage.py and your app folders are included in the build

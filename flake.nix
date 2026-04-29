@@ -69,7 +69,6 @@
 					postInstall = ''
 						export DJANGO_SETTINGS_MODULE=mathoscope.settings
 						export SECRET_KEY=dummy
-						export PRODUCTION=true
 						python manage.py collectstatic --noinput
 						mkdir -p $out/share/static
 						cp -r static_root/* $out/share/static/.
