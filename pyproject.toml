@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mathoscope"
+version = "0.1.0"
+description = "Reproducible Python environment for Mathoscope."
+dependencies = [
+    "django",
+    "django-bootstrap5",
+    "django-widget-tweaks",
+    "gunicorn",
+    "requests",
+    "tqdm",
+    "conllu",
+]
+
+[tool.setuptools]
+# This ensures manage.py and your app folders are included in the build
+packages = ["mathoscope"] 
+py-modules = ["manage"]
+
+[project.scripts]
+# This creates a 'mathoscope-admin' command in your Nix result/bin
+mathoscope-admin = "manage:main"

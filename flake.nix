@@ -45,11 +45,16 @@
 					python3
 				];
 			};
-			packages.${system} = {
+			packages = {
 				default = pkgs.python3Packages.buildPythonApplication {
 					pname = "mathoscope";
 					version = "0.1.0";
+					format = "pyproject";
 					src = ./.;
+					nativeBuildInputs = [
+						pkgs.python3Packages.setuptools
+						pkgs.python3Packages.wheel
+					];
 					propagatedBuildInputs = with pkgs.python3Packages; [
 						conllu
 						django
