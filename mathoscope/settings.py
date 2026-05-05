@@ -140,3 +140,4 @@ if os.environ.get('PRODUCTION') == 'true':
             'PORT': '5432',
         }
     }
+    SEARCH_REGEX = r'\m%s\M'
