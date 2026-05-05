@@ -22,8 +22,15 @@ authors = [
 
 [tool.setuptools]
 # This ensures manage.py and your app folders are included in the build
-packages = ["mathoscope", "context"] 
 py-modules = ["manage"]
+
+[tool.setuptools.packages.find]
+
+where = ["."]
+include = [
+	"mathoscope*",
+	"context*",
+]
 
 [project.scripts]
 # This creates a 'mathoscope-admin' command in your Nix result/bin
