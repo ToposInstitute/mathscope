@@ -33,6 +33,7 @@
 				django-bootstrap5
 				django-widget-tweaks
 				gunicorn
+				neo4j
 				pip
 				requests
 				tqdm
