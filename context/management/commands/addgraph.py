@@ -2,6 +2,7 @@ import argparse
 import csv
 import requests
 import sys
+import time
 import traceback
 
 from django.core.management.base import BaseCommand, CommandError
@@ -29,7 +30,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
-
 
         try:
             uri = kwargs['uri']
@@ -112,19 +112,19 @@ def add_mathgloss_node(driver, node):
 def expand_node(driver, node_id):
 
     query = """
-    SELECT DISTINCT ?propertyID ?propertyLabel ?relatedElementID ?relatedElementLabel WHERE {
-      wd:%s ?directProperty ?relatedElement .
+    SELECT DISTINCT ?relationID ?relationLabel ?targetID ?targetLabel WHERE {
+      wd:%s ?directProperty ?target .
       
-      ?property wikibase:directClaim ?directProperty .
+      ?relation wikibase:directClaim ?directProperty .
       
-      ?relatedElement (wdt:P31|wdt:P279) / 
+      ?target (wdt:P31|wdt:P279) / 
                       (wdt:P31|wdt:P279)? / 
                       (wdt:P31|wdt:P279)? / 
                       (wdt:P31|wdt:P279)? / 
                       (wdt:P31|wdt:P279)? wd:Q24034552 .
 
-      BIND(REPLACE(STR(?property), "^.*/", "") AS ?propertyID)
-      BIND(REPLACE(STR(?relatedElement), "^.*/", "") AS ?relatedElementID)
+      BIND(REPLACE(STR(?relation), "^.*/", "") AS ?relationID)
+      BIND(REPLACE(STR(?target), "^.*/", "") AS ?targetID)
       
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
     }
@@ -145,39 +145,40 @@ def expand_node(driver, node_id):
             if result.status_code != 200:
                 print(result)
                 print("Too many requests. Retrying.")
-                time.sleep(result.headers['retry-after'])
+                if result.status_code == 429:
+                    time.sleep(int(result.headers['retry-after']))
                 continue
             break
 
         json = result.json()
         for item in json['results']['bindings']:
-            relation_id = item['relatedElementID']['value']
-            property_id = item['propertyID']['value']
-            related_name = item['relatedElementLabel']['value']
-            property_name = item['propertyLabel']['value']
+            target_id = item['targetID']['value']
+            target_label = item['targetLabel']['value']
+            relation_id = item['relationID']['value']
+            relation_label = item['relationLabel']['value']
 
             query = """
-            MERGE (t:Term {wikidata_id: $related_id})
+            MERGE (t:Term {wikidata_id: $target_id})
             ON CREATE SET
-                t.wikidata_label = $related_label,
+                t.wikidata_label = $target_label,
                 t.is_base = false
             WITH t
             MERGE (e:Term {wikidata_id: $source_id})
             WITH t, e
-            MERGE (e)-[r:RELATED_TO { rel_id: $rel_id }]->(t)
+            MERGE (e)-[r:RELATED_TO { rel_id: $relation_id }]->(t)
             ON CREATE SET
-                r.label = $related_name
+                r.label = $relation_label
             """
 
             with driver.session() as session:
                 session.execute_write(
                     lambda tx: tx.run(
                         query,
-                        related_id=property_id,
-                        related_label=related_name,
+                        target_id=target_id,
+                        target_label=target_label,
                         source_id=node_id,
-                        rel_id=relation_id,
-                        related_name=related_name,
+                        relation_id=relation_id,
+                        relation_label=relation_label,
                     )
                 )
 
