@@ -1,4 +1,5 @@
 import time
+import re
 import requests
 from neo4j import GraphDatabase
 
@@ -46,8 +47,10 @@ def get_first_two_paragraphs(wiki_title):
         for _, page_info in pages.items():
             extract = page_info.get("extract", "")
             # Split text by line breaks and capture non-empty paragraphs
-            paragraphs = [p.strip() for p in extract.split("\n") if p.strip()]
-            return "\n\n".join(paragraphs[:2]) if paragraphs else None
+            paragraphs = [p.strip() for p in extract.split("\n\n") if p.strip()]
+            return "\n\n".join(
+                map(lambda x: re.sub(r'\s+', ' ', x), paragraphs[:2])
+            ) if paragraphs else None
     except requests.RequestException:
         return None
 
